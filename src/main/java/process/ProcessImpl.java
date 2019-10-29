@@ -4,6 +4,7 @@ public class ProcessImpl implements Process {
     private int processId;
     private int processBurstTime;
     private int processArrivalTime;
+    private int remainingBurstTimeToExecute;
 
     public void setProcessId(int id) {
         processId = id;
@@ -11,6 +12,7 @@ public class ProcessImpl implements Process {
 
     public void setProcessBurstTime(int burstTime) {
         processBurstTime = burstTime;
+        remainingBurstTimeToExecute = burstTime;
     }
 
     public void setProcessArrivalTime(int arrivalTime) {
@@ -27,5 +29,14 @@ public class ProcessImpl implements Process {
 
     public int getProcessArrivalTime() {
         return processArrivalTime;
+    }
+
+    public int getRemainingBurstTimeToExecute(){
+        return remainingBurstTimeToExecute;
+    }
+
+    public int decrementBurstTime(){
+        remainingBurstTimeToExecute--;
+        return remainingBurstTimeToExecute;
     }
 }

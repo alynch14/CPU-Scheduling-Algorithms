@@ -7,4 +7,6 @@ public interface Process{
     public int getProcessId();
     public int getProcessBurstTime();
     public int getProcessArrivalTime();
+    public int decrementBurstTime();
+    public int getRemainingBurstTimeToExecute();
 }

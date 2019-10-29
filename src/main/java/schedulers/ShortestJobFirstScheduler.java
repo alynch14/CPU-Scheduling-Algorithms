@@ -9,7 +9,7 @@ public class ShortestJobFirstScheduler implements CpuSchedulingAlgorithm {
     private List<Process> processList = new ArrayList<Process>();
 
     public void setProcesses(List<Process> processList) {
-
+        this.processList.addAll(processList);
     }
 
     public void runAlgorithm() {
