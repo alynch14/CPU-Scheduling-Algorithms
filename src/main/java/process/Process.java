@@ -9,4 +9,8 @@ public interface Process{
     public int getProcessArrivalTime();
     public int decrementBurstTime();
     public int getRemainingBurstTimeToExecute();
+    public void setWaitTime(int waitTime);
+    public void setTurnaroundTime(int turnaroundTime);
+    public int getWaitTime();
+    public int getTurnaroundTime();
 }

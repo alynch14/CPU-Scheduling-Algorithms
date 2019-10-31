@@ -14,14 +14,23 @@ public class ShortestJobFirstScheduler implements CpuSchedulingAlgorithm {
 
     public void runAlgorithm() {
         StringBuilder mainChart = new StringBuilder("|");
-        String times = "0";
-        int lastProcessBurstTime = 0;
+        StringBuilder times = new StringBuilder("0");
+        int totalTime = 0;
 
         sortData();
         for(Process process : processList){
+            totalTime += (process.getProcessBurstTime() - process.getProcessArrivalTime());
             mainChart.append(process.getProcessId()).append("|");
-//            times += " " +
+            times.append(" ").append(totalTime);
+            process.setTurnaroundTime(process.getProcessBurstTime());
+            if(process.getProcessArrivalTime() > 0){
+                process.setWaitTime(totalTime - process.getProcessArrivalTime());
+            }else{
+                process.setWaitTime(totalTime);
+            }
         }
+
+        ganttChart = mainChart.toString() + "\n" + times.toString();
     }
 
     private void sortData(){
