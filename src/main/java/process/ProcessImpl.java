@@ -8,6 +8,12 @@ public class ProcessImpl implements Process {
     private int waitTime;
     private int turnaroundTime;
 
+    public ProcessImpl(int id, int burstTime, int arrivalTime){
+        processId = id;
+        processBurstTime = burstTime;
+        processArrivalTime = arrivalTime;
+    }
+
     @Override
     public void setProcessId(int id) {
         processId = id;
