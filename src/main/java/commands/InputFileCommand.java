@@ -4,7 +4,7 @@ package commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
-@Parameters(commandDescription = "Specifies that there is an input file containing the processes to be simulated.")
+@Parameters(commandNames = "inputFile", commandDescription = "Specifies that there is an input file containing the processes to be simulated.")
 public class InputFileCommand {
 
     @Parameter(names = {"-t", "--text-file"}, description = "Specifies that the input file is a text file.")
