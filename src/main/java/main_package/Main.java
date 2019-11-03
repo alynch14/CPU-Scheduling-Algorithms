@@ -1,3 +1,5 @@
+package main_package;
+
 import com.beust.jcommander.JCommander;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commands.InputFileCommand;
@@ -8,9 +10,7 @@ import schedulers.CpuSchedulingAlgorithm;
 import schedulers.RoundRobinScheduler;
 import schedulers.ShortestJobFirstScheduler;
 
-import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args){
         ObjectMapper objectMapper = new ObjectMapper();
         CpuSchedulingAlgorithm shortestJobFirst = new ShortestJobFirstScheduler();
-        CpuSchedulingAlgorithm roundRobin = new RoundRobinScheduler();
+        RoundRobinScheduler roundRobin = new RoundRobinScheduler();
         ArrayList<Process> processList = new ArrayList<>(20);
         InputFileCommand inputFileCommand = new InputFileCommand();
         RandomProcessCommand randomProcessCommand = new RandomProcessCommand();
@@ -50,6 +50,18 @@ public class Main {
         shortestJobFirst.runAlgorithm();
         String gantChart = shortestJobFirst.getGanttChart();
 
-        System.out.println(gantChart);
+        System.out.println("Gantt Chart with SJF algorithm:\n\n" + gantChart);
+
+        roundRobin.setProcesses(processList);
+        if(randomProcessCommand.getTimeQuantum() != 0){
+            roundRobin.setTimeQuantum(randomProcessCommand.getTimeQuantum());
+        } else if (inputFileCommand.getTimeQuantum() != 0){
+            roundRobin.setTimeQuantum(randomProcessCommand.getTimeQuantum());
+        }
+
+        roundRobin.runAlgorithm();
+        gantChart = roundRobin.getGanttChart();
+
+        System.out.println("Gantt Chart with Round Robin algorithm:\n\n" + gantChart);
     }
 }

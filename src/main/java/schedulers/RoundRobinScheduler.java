@@ -3,6 +3,7 @@ package schedulers;
 import process.Process;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class RoundRobinScheduler implements CpuSchedulingAlgorithm {
@@ -24,44 +25,42 @@ public class RoundRobinScheduler implements CpuSchedulingAlgorithm {
     public String getGanttChart(){
         return ganttChart;
     }
+
     public void runAlgorithm() {
         checkArrivalTimes();
         executeProcess();
     }
 
     private void executeProcess(){
-        currentTime++;
         boolean isAlgorithmRunning = true;
         int currentProcessTimeLeft;
         int timeRunning = 0;
-        boolean isFirstRound = true;
+        StringBuilder processRow = new StringBuilder("|");
+        StringBuilder timeRow = new StringBuilder("0");
 
-        System.out.printf("| ");
         while(isAlgorithmRunning) {
+            currentTime++;
             currentProcessTimeLeft = processList.get(index).decrementBurstTime();
             timeRunning++;
             if (currentProcessTimeLeft == 0 || timeRunning == timeQuantum) {
+                processRow.append(index).append("|");
+                timeRow.append(" ").append(currentTime);
                 index = findNextUnfinishedProcessIndex();
                 timeRunning = 0;
-            } else if (isFirstRound && processList.get(index+1).getProcessArrivalTime() == currentTime){
-                index = findNextUnfinishedProcessIndex();
             } else if(totalTime == currentTime){
-                //All processes have been finished
+                //All processes have finished
                 isAlgorithmRunning = false;
-            }
-
-            if(index == processList.size()-1){
-                isFirstRound = false;
             }
         }
 
+        ganttChart = processRow.toString() + "\n" + timeRow.toString();
     }
 
     private int findNextUnfinishedProcessIndex(){
         boolean isNextProcessIndexFound = false;
-        int i = index;
+        int i = ++index;
         while(!isNextProcessIndexFound){
-            if(processList.get(0).getRemainingBurstTimeToExecute() != 0){
+            if(processList.get(i).getRemainingBurstTimeToExecute() != 0){
                 isNextProcessIndexFound = true;
             } else if (i == processList.size()-1){
                 i = 0;
@@ -74,13 +73,11 @@ public class RoundRobinScheduler implements CpuSchedulingAlgorithm {
      * Sort the list of processes by their arrival times.
      */
     private void checkArrivalTimes(){
-        int arrivalTime;
 
-        for(Process process : processList){
-            arrivalTime = process.getProcessArrivalTime();
+        for (Process process : processList) {
             totalTime += process.getProcessBurstTime();
-            processList.remove(process);
-            processList.add(arrivalTime, process);
         }
+
+        processList.sort(Comparator.comparing(Process::getProcessArrivalTime));
     }
 }

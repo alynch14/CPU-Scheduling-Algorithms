@@ -28,6 +28,7 @@ public class ShortestJobFirstScheduler implements CpuSchedulingAlgorithm {
             }else{
                 process.setWaitTime(totalTime);
             }
+            process.setTurnaroundTime(process.getProcessBurstTime());
         }
 
         ganttChart = mainChart.toString() + "\n" + times.toString();

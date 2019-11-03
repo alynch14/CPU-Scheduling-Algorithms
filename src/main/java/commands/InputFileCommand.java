@@ -13,6 +13,9 @@ public class InputFileCommand {
     @Parameter(names = {"-j", "--json-file"}, description = "Specifies that the input file is a json file.")
     String jsonFileName = null;
 
+    @Parameter(names = {"-t", "--time-quantum"}, description = "Sets the time quantum for round robin algorithm.")
+    private int timeQuantum;
+
     public String getTextFileName() {
         return textFileName;
     }
@@ -27,5 +30,13 @@ public class InputFileCommand {
 
     public void setJsonFileName(String jsonFileName) {
         this.jsonFileName = jsonFileName;
+    }
+
+    public int getTimeQuantum() {
+        return timeQuantum;
+    }
+
+    public void setTimeQuantum(int timeQuantum) {
+        this.timeQuantum = timeQuantum;
     }
 }
