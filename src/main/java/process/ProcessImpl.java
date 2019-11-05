@@ -75,4 +75,9 @@ public class ProcessImpl implements Process {
         remainingBurstTimeToExecute--;
         return remainingBurstTimeToExecute;
     }
+
+    @Override
+    public String toString(){
+        return String.format("Process: %d\nBurst Time: %d\nArrival Time: %d", processId, processBurstTime,processArrivalTime);
+    }
 }

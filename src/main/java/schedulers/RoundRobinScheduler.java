@@ -43,12 +43,16 @@ public class RoundRobinScheduler implements CpuSchedulingAlgorithm {
             currentProcessTimeLeft = processList.get(index).decrementBurstTime();
             timeRunning++;
             if (currentProcessTimeLeft == 0 || timeRunning == timeQuantum) {
-                processRow.append(index).append("|");
+                processRow.append(index+1).append("|");
                 timeRow.append(" ").append(currentTime);
                 index = findNextUnfinishedProcessIndex();
                 timeRunning = 0;
             } else if(totalTime == currentTime){
                 //All processes have finished
+                isAlgorithmRunning = false;
+            }
+
+            if(index == -1){
                 isAlgorithmRunning = false;
             }
         }
@@ -58,12 +62,20 @@ public class RoundRobinScheduler implements CpuSchedulingAlgorithm {
 
     private int findNextUnfinishedProcessIndex(){
         boolean isNextProcessIndexFound = false;
-        int i = ++index;
+        int startIndex = index;
+        int i = (index == processList.size()-1)? 0:++index;
         while(!isNextProcessIndexFound){
-            if(processList.get(i).getRemainingBurstTimeToExecute() != 0){
+            if(processList.get(i).getRemainingBurstTimeToExecute() > 0){
                 isNextProcessIndexFound = true;
             } else if (i == processList.size()-1){
                 i = 0;
+            } else if (i == startIndex+1){
+                return -1;
+            } else {
+                i++;
+            }
+            if(totalTime == currentTime){
+                isNextProcessIndexFound = true;
             }
         }
         return i;
